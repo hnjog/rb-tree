@@ -525,7 +525,7 @@ void rbtree_inOrder_insert(const rbtree *t,const size_t size,node_t* n, key_t* k
 
 int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n)
 {
-  size_t topindex = 0;
+  int topindex = 0;
   rbtree_inOrder_insert(t,n,t->root,arr,&topindex);
   
   return 0;
