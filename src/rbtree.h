@@ -2,6 +2,7 @@
 #define _RBTREE_H_
 
 #include <stddef.h>
+#include<stdio.h>
 
 typedef enum { RBTREE_RED, RBTREE_BLACK } color_t;
 
@@ -30,19 +31,23 @@ void rb_right_rotate(rbtree* t, node_t* z);
 // 5번 조건 만족을 위하여
 // 삽입 후에도 경로 상의 black 개수가 변하지 않기 위하여
 
-node_t *rbtree_insert(rbtree *, const key_t);
-int rbtree_erase(rbtree *, node_t *);
+node_t *rbtree_insert(rbtree *t, const key_t key);
+int rbtree_erase(rbtree *t, node_t * z);
+
+void rbtree_transplant(rbtree* t, node_t* u, node_t* v);
+node_t* rbtree_find_succesor(rbtree* t, node_t* z);
 
 void rb_insert_fixup(rbtree* t, node_t* z);
 void rb_erase_fixup(rbtree* t, node_t* z);
 
-node_t *rbtree_find(const rbtree *, const key_t);
-node_t *rbtree_min(const rbtree *);
-node_t *rbtree_max(const rbtree *);
+node_t *rbtree_find(const rbtree *t, const key_t key);
+node_t *rbtree_min(const rbtree *t);
+node_t *rbtree_max(const rbtree *t);
 
 // 트리를 배열로 반환하기
 // inOrder
-int rbtree_to_array(const rbtree *, key_t *, const size_t);
+void rbtree_inOrder_insert(const rbtree *t,const size_t size,node_t* n, key_t* key, int* index);
+int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n);
 
 #endif  // _RBTREE_H_
 
