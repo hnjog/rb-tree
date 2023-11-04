@@ -11,6 +11,7 @@ rbtree *new_rbtree(void)
   // calloc : 할당된 데이터 내부 0으로 초기화
   rbtree *p = (rbtree *)calloc(1, sizeof(rbtree));
   p->nil = (node_t*)calloc(1,sizeof(node_t));
+  p->nil->color = RBTREE_BLACK;
   p->root = p->nil;
 
   return p;
@@ -174,6 +175,7 @@ node_t *rbtree_insert(rbtree *t, const key_t key)
 
   newNode->left = t->nil;
   newNode->right = t->nil;
+  newNode->parent = prevNode;
   newNode->color = RBTREE_RED;
 
   rb_insert_fixup(t, newNode);
@@ -314,7 +316,7 @@ void rb_insert_fixup(rbtree *t, node_t *z)
         // case 3
         z->parent->color = RBTREE_BLACK; // 부모색을 검게 (부모와 조부모 색 교환)
         z->parent->parent->color = RBTREE_RED;  // 조부모 색을 붉게(부모가 붉다는 가정이며, 또한 4번 규칙)
-        rb_right_rotate(t,z);
+        rb_right_rotate(t,z->parent->parent);
       }
     }
     else // 부모가 조부모의 오른쪽 자식이므로 위의 코드의 좌우를 변경해준다
@@ -340,7 +342,7 @@ void rb_insert_fixup(rbtree *t, node_t *z)
         // case 3
         z->parent->color = RBTREE_BLACK; // 부모색을 검게 (부모와 조부모 색 교환)
         z->parent->parent->color = RBTREE_RED;  // 조부모 색을 붉게(부모가 붉다는 가정이며, 또한 4번 규칙)
-        rb_left_rotate(t,z);
+        rb_left_rotate(t,z->parent->parent);
       }
     }
   }
