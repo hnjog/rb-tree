@@ -19,35 +19,20 @@ typedef struct {
   node_t *nil;  // for sentinel
 } rbtree;
 
-rbtree *new_rbtree(void);
-void delete_rbtree(rbtree *t);
-void delete_Node(rbtree *t,node_t* n);
-
-// 회전
-void rb_left_rotate(rbtree* t, node_t* z);
-void rb_right_rotate(rbtree* t, node_t* z);
-
 // 삽입시 기본적으로는 red 노드를 삽입
 // 5번 조건 만족을 위하여
 // 삽입 후에도 경로 상의 black 개수가 변하지 않기 위하여
 
-node_t *rbtree_insert(rbtree *t, const key_t key);
-int rbtree_erase(rbtree *t, node_t * z);
+rbtree *new_rbtree(void);
+void delete_rbtree(rbtree *);
 
-void rbtree_transplant(rbtree* t, node_t* u, node_t* v);
-node_t* rbtree_find_succesor(rbtree* t, node_t* z);
+node_t *rbtree_insert(rbtree *, const key_t);
+node_t *rbtree_find(const rbtree *, const key_t);
+node_t *rbtree_min(const rbtree *);
+node_t *rbtree_max(const rbtree *);
+int rbtree_erase(rbtree *, node_t *);
 
-void rb_insert_fixup(rbtree* t, node_t* z);
-void rb_erase_fixup(rbtree* t, node_t* z);
-
-node_t *rbtree_find(const rbtree *t, const key_t key);
-node_t *rbtree_min(const rbtree *t);
-node_t *rbtree_max(const rbtree *t);
-
-// 트리를 배열로 반환하기
-// inOrder
-void rbtree_inOrder_insert(const rbtree *t,const size_t size,node_t* n, key_t* key, int* index);
-int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n);
+int rbtree_to_array(const rbtree *, key_t *, const size_t);
 
 #endif  // _RBTREE_H_
 

@@ -2,9 +2,21 @@
 
 #include <stdlib.h>
 
+// 회전
+void rb_left_rotate(rbtree* t, node_t* z);
+void rb_right_rotate(rbtree* t, node_t* z);
+
 void delete_Node(rbtree *t,node_t* n);
+
 void rbtree_transplant(rbtree* t, node_t* u, node_t* v);
 node_t* rbtree_find_succesor(rbtree* t, node_t* z);
+
+void rb_insert_fixup(rbtree* t, node_t* z);
+void rb_erase_fixup(rbtree* t, node_t* z);
+
+// 트리를 배열로 반환하기
+// inOrder
+void rbtree_inOrder_insert(const rbtree *t,const size_t size,node_t* n, key_t* key, int* index);
 
 rbtree *new_rbtree(void)
 {
