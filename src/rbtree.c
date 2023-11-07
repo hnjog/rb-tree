@@ -202,7 +202,7 @@ int rbtree_erase(rbtree *t, node_t *z)
     return -1;
   }
 
-  node_t* target = z; // 삭제할 노드
+  node_t* target = z; // z : 삭제할 노드
   color_t targetOriginColor = target->color;
   node_t* v = t->nil; // 대체할 노드
 
@@ -227,16 +227,21 @@ int rbtree_erase(rbtree *t, node_t *z)
 
     // 삭제 노드가 아니라 succesor의 색
     targetOriginColor = target->color;
-    v = target->right;
+    // 좌측 자식은 없을테니 우측자식을 삭제 위치 대체노드로 (succesor를 가져왔으므로, 왼쪽 자식이 있다면 그녀석이 target일 것)
+    // v가 nil이라도 그렇게 상관은 없다
+    v = target->right; 
     if (target->parent == z){ // succesor의 부모가 삭제 노드라면
       v->parent = target; // v는 원래 삭제될 위치로 이동될 것이기에 부모 재설정
     }
     else{
+      // 그렇지 않다면 target에 v(target->right)를 삽입한다
+      // target은 z의 위치를 대체할 것이므로
+      // v는 target의 위치를 대체한다 (우측 자식이 해당 부분 대체, nil이라도 상관은 없음)
       rbtree_transplant(t,target,v);
       target->right = z->right;
       target->right->parent = target;
     }
-    rbtree_transplant(t,z,target);
+    rbtree_transplant(t,z,target); // z의 위치에 target을 삽입한다
     target->left = z->left;
     target->left->parent = target;
     target->color = z->color;
@@ -248,6 +253,8 @@ int rbtree_erase(rbtree *t, node_t *z)
   }
 
   // 노드 삭제되었으므로 해제
+  // z 노드 자체는 transplant에 의하여
+  // 트리에서 제거된 상태이니 실제로 할당을 해제하고 삭제한다
   free(z);
   z = NULL;
 
